@@ -1,0 +1,12 @@
+﻿CREATE DATABASE [TomadaStore.CustomerDB]
+GO
+
+USE [TomadaStore.CustomerDB]
+
+CREATE TABLE [dbo].[Customers](
+	[Id] INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+	[FistName] NVARCHAR(50) NOT NULL,
+	[LastName] NVARCHAR(50) NOT NULL,
+	[Email] NVARCHAR(100) NOT NULL UNIQUE,
+	[PhoneNumber] NVARCHAR(15) NULL
+)
