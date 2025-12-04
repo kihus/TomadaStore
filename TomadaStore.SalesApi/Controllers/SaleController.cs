@@ -1,0 +1,35 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using TomadaStore.SalesApi.DTOs.Sales;
+using TomadaStore.SalesApi.Services.Interfaces;
+
+namespace TomadaStore.SalesApi.Controllers
+{
+    [Route("api/v1/[controller]")]
+    [ApiController]
+    public class SaleController(
+        ISaleService salesService, 
+        ILogger<SaleController> logger
+        ) 
+        : ControllerBase
+    {
+        private readonly ISaleService _salesService = salesService;
+        private readonly ILogger<SaleController> _logger = logger;
+
+
+        [HttpPost]
+        public async Task<ActionResult> CreateSale([FromBody] SaleRequestDto sales)
+        {
+            try
+            {
+                await _salesService.CreateSales(sales);
+                return Created();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "error");
+                return Problem(ex.Message);
+            }
+        }
+    }
+}

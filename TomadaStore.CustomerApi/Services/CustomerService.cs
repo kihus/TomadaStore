@@ -1,6 +1,7 @@
 ﻿using TomadaStore.CustomerApi.Repository.Interfaces;
 using TomadaStore.CustomerApi.Services.Interfaces;
 using TomadaStore.Models.DTOs.Customer;
+using TomadaStore.Models.DTOs.Page;
 using TomadaStore.Models.Entities;
 using TomadaStore.Models.Extensions;
 
@@ -17,28 +18,37 @@ public class CustomerService : ICustomerService
         _customerRespository = customerRepository;
     }
 
-    public async Task<List<CustomerResponseDto>> GetAllCustomerAsync()
+    public async Task<CustomerDto> GetAllCustomerAsync(PageDto pageDto)
     {
+        var currentPage = 1;
+
+        if (pageDto.Page > 1)
+            currentPage = pageDto.Page;
+
         try
         {
             var customers = await _customerRespository.GetAllCustomerAsync();
             var quantityCustomers = customers.Count;
-            
-            if (quantityCustomers is 0)
-                return null;
+
+            var customersList = customers.Skip(currentPage > 1 ? 20 * (currentPage - 1) : 0).Take(20).ToList();
 
             var info = new Info
             {
                 CustomerQuantity = quantityCustomers,
-                Pages = (quantityCustomers < 20 
+                Pages = (quantityCustomers <= 20
                             ? 1
-                            : (quantityCustomers)/20)
-
-                 
+                            : (quantityCustomers / 20) + 1),
+                Next = (customersList.Count >= 20 ? $"https://localhost:5001/api/v1/customer/?page={currentPage + 1}" : null),
+                Previous = (currentPage > 1 ? $"https://localhost:5001/api/v1/customer/?page={currentPage - 1}" : null)
             };
 
+            var customer = new CustomerDto
+            {
+                Info = info,
+                Result = customersList
+            };
 
-            return customers;
+            return customer;
         }
         catch (Exception ex)
         {
@@ -71,6 +81,20 @@ public class CustomerService : ICustomerService
         try
         {
             await _customerRespository.InsertCustomerAsync(customer.ToCustomer());
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"SQL Error insert customer: {ex.StackTrace}");
+
+            throw new Exception(ex.Message);
+        }
+    }
+
+    public async Task UpdateStatusCustomerAsync(int id)
+    {
+        try
+        {
+
         }
         catch (Exception ex)
         {

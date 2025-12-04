@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TomadaStore.CustomerApi.Services;
 using TomadaStore.CustomerApi.Services.Interfaces;
 using TomadaStore.Models.DTOs.Customer;
+using TomadaStore.Models.DTOs.Page;
 
 
 namespace TomadaStore.CustomerApi.Controllers
@@ -36,12 +37,12 @@ namespace TomadaStore.CustomerApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CustomerResponseDto>>> GetAllCustomers()
+        public async Task<ActionResult<List<CustomerResponseDto>>> GetAllCustomers([FromQuery] PageDto pageDto)
         {
             try
             {
                 _logger.LogInformation("Get all customers");
-                var custormers = await _customerService.GetAllCustomerAsync();
+                var custormers = await _customerService.GetAllCustomerAsync(pageDto);
 
                 if (custormers is null)
                     return NotFound("Register not found!");
