@@ -31,5 +31,24 @@ namespace TomadaStore.SalesApi.Controllers
                 return Problem(ex.Message);
             }
         }
+
+        [HttpGet]
+        public async Task<ActionResult<List<SaleResponseDto>>> GetAllSales()
+        {
+            try
+            {
+                var sales = await _salesService.GetAllSales();
+
+                if (sales.Count == 0)
+                    return NotFound("Register not found");
+
+                return Ok(sales);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "error");
+                return Problem(ex.Message);
+            }
+        }
     }
 }

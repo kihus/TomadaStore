@@ -18,12 +18,12 @@ public class CustomerService : ICustomerService
         _customerRespository = customerRepository;
     }
 
-    public async Task<CustomerDto> GetAllCustomerAsync(PageDto pageDto)
+    public async Task<CustomerDto> GetAllCustomerAsync(int page)
     {
         var currentPage = 1;
 
-        if (pageDto.Page > 1)
-            currentPage = pageDto.Page;
+        if (page > 1)
+            currentPage = page;
 
         try
         {

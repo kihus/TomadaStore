@@ -1,8 +1,4 @@
-﻿using MongoDB.Bson;
-using System.Text.Json.Serialization;
-using System.Xml.Linq;
-using TomadaStore.Models.DTOs.Category;
-using TomadaStore.Models.Entities;
+﻿using System.Text.Json.Serialization;
 
 namespace TomadaStore.SalesApi.DTOs.Sales;
 public class SaleProductRequestDto

@@ -2,10 +2,13 @@
 using TomadaStore.Models.DTOs.Product;
 using TomadaStore.Models.DTOs;
 using TomadaStore.Models.Entities;
+using TomadaStore.SalesApi.DTOs.Sales;
 
 namespace TomadaStore.SalesApi.Repositories.Interface;
 
 public interface ISaleRepository
 {
     Task CreateSaleAsync(Sale sale);
+    Task<List<SaleResponseDto>> GetAllSales();
 }
+

@@ -36,13 +36,13 @@ namespace TomadaStore.CustomerApi.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<CustomerResponseDto>>> GetAllCustomers([FromQuery] PageDto pageDto)
+        [HttpGet("{page}")]
+        public async Task<ActionResult<List<CustomerResponseDto>>> GetAllCustomers([FromQuery] int page)
         {
             try
             {
                 _logger.LogInformation("Get all customers");
-                var custormers = await _customerService.GetAllCustomerAsync(pageDto);
+                var custormers = await _customerService.GetAllCustomerAsync(page);
 
                 if (custormers is null)
                     return NotFound("Register not found!");
@@ -55,7 +55,7 @@ namespace TomadaStore.CustomerApi.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("id/{id}")]
         public async Task<ActionResult<CustomerRequestDto>> GetCustomerById(int id)
         {
             try

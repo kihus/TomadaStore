@@ -1,13 +1,26 @@
-﻿namespace TomadaStore.Models.Entities;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using TomadaStore.Models.DTOs.Sales;
+
+namespace TomadaStore.Models.Entities;
 
 public class Sale(
-    Customer customer, 
+    CustomerSale customer, 
     List<ProductSale> products
     )
 {
-    public string Id { get; private set; }
-    public Customer Customer { get; private set; } = customer;
+    [BsonRepresentation(BsonType.ObjectId)]
+    public ObjectId Id { get; private set; }
+
+    [BsonElement("customer")]
+    public CustomerSale Customer { get; private set; } = customer;
+
+    [BsonElement("products")]
     public List<ProductSale> Products { get; private set; } = products;
+
+    [BsonElement("sale_date")]
     public DateTime SaleDate { get; private set; } = DateTime.Now;
+
+    [BsonElement("total_price")]
     public decimal TotalPrice { get; private set; } = products.Sum(x => x.TotalPrice);
 }

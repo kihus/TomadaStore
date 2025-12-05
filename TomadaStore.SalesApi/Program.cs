@@ -1,4 +1,5 @@
 using TomadaStore.CustomerApi.Data;
+using TomadaStore.ProductApi.Data;
 using TomadaStore.SalesApi.Repositories;
 using TomadaStore.SalesApi.Repositories.Interface;
 using TomadaStore.SalesApi.Services;
@@ -11,6 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.Configure<MongoDbSettings>(
+   builder.Configuration.GetSection("MongoDB")
+    );
 
 builder.Services.AddSingleton<ConnectionDb>();
 

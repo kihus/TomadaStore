@@ -57,7 +57,7 @@ namespace TomadaStore.ProductApi.Controllers
             }
         }
 
-        [HttpGet("products/")]
+        [HttpPost("products/")]
         public async Task<ActionResult<List<ProductResponseDto>>> GetProductsAsync([FromBody] ProductIdDto productsId)
         {
             try

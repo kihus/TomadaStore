@@ -7,7 +7,7 @@ namespace TomadaStore.SalesApi.Services.Interfaces;
 public interface ISaleService
 {
     Task CreateSales(SaleRequestDto sales);
-    Task<List<SalesResponseDto>> GetAll();
-    Task<SalesResponseDto> GetById();
+    Task<List<SaleResponseDto>> GetAllSales();
+    Task<SaleResponseDto> GetById();
     Task UpdateById(ObjectId id);
 }
