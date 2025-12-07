@@ -1,6 +1,5 @@
-﻿using MongoDB.Driver;
-using System.Security.Cryptography.X509Certificates;
-using TomadaStore.CustomerApi.Data;
+﻿using Infrastructure.Data.Mongo.Contexts;
+using MongoDB.Driver;
 using TomadaStore.Models.Entities;
 using TomadaStore.Models.Extensions;
 using TomadaStore.SalesApi.DTOs.Sales;
@@ -12,13 +11,11 @@ public class SaleRepository : ISaleRepository
 {
     private readonly ILogger<Sale> _logger;
     private readonly IMongoCollection<Sale> _saleCollection;
-    private readonly ConnectionDb _connection;
 
-    public SaleRepository(ILogger<Sale> logger, ConnectionDb connection)
+    public SaleRepository(ILogger<Sale> logger, MongoDbContext connection)
     {
         _logger = logger;
-        _connection = connection;
-        _saleCollection = _connection.GetMongoCollection();
+        _saleCollection = connection.Sales;
     }
 
     public async Task CreateSaleAsync(Sale sale)

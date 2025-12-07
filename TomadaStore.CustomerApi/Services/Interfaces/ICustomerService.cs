@@ -7,6 +7,6 @@ namespace TomadaStore.CustomerApi.Services.Interfaces;
 public interface ICustomerService
 {
     Task InsertCustomerAsync(CustomerRequestDto customer);
-    Task<CustomerDto> GetAllCustomerAsync(int page);
+    Task<CustomerDto> GetAllCustomerAsync(PageDto dto);
     Task<CustomerResponseDto> GetCustomerByIdAsync(int id);
 }

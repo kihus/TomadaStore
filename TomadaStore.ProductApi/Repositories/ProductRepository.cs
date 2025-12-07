@@ -1,24 +1,22 @@
-﻿using MongoDB.Bson;
+﻿using Infrastructure.Data.Mongo.Contexts;
+using Infrastructure.Data.Repositories;
+using MongoDB.Bson;
 using MongoDB.Driver;
-using TomadaStore.CustomerApi.Data;
 using TomadaStore.Models.DTOs.Product;
 using TomadaStore.Models.Entities;
 using TomadaStore.ProductApi.Repositories.Interfaces;
 
 namespace TomadaStore.ProductApi.Repositories;
 
-public class ProductRepository : IProductRepository
+public class ProductRepository(
+    ILogger<ProductRepository> logger, 
+    MongoDbContext connection,
+    LogRepository logRepository
+    ) : IProductRepository
 {
-    private readonly ILogger<ProductRepository> _logger;
-    private readonly IMongoCollection<Product> _mongoCollection;
-    private readonly ConnectionDb _connection;
-
-    public ProductRepository(ILogger<ProductRepository> logger, ConnectionDb connection)
-    {
-        _logger = logger;
-        _connection = connection;
-        _mongoCollection = connection.GetMongoCollection();
-    }
+    private readonly ILogger<ProductRepository> _logger = logger;
+    private readonly IMongoCollection<Product> _mongoCollection = connection.Products;
+    private readonly LogRepository _logRepository = logRepository;
 
     public async Task CreateProduct(Product product)
     {
@@ -47,17 +45,22 @@ public class ProductRepository : IProductRepository
     {
         try
         {
+            var log = new Log(DateTime.Now.ToLongDateString(), "teste", "testando stack", "teste 2", DateTime.UtcNow);
             var filter = Builders<Product>.Filter.Empty;
+            await _logRepository.SaveAsync(log);
+            
             return _mongoCollection.Find(filter).ToList();
         }
         catch (MongoException mongoEx)
         {
-            _logger.LogError(mongoEx, "Mongo error");
+            var log = new Log(DateTime.Now.ToLongDateString(), mongoEx.Message, mongoEx.StackTrace, mongoEx.Source, DateTime.UtcNow);
+            await _logRepository.SaveAsync(log);
             throw new Exception(mongoEx.Message);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "error");
+            var log = new Log(DateTime.Now.ToLongDateString(), ex.Message, ex.StackTrace, ex.Source, DateTime.UtcNow);
+            await _logRepository.SaveAsync(log);
             throw new Exception(ex.Message);
         }
     }

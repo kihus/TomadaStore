@@ -1,5 +1,5 @@
-using TomadaStore.CustomerApi.Data;
-using TomadaStore.ProductApi.Data;
+using Infrastructure.Data.Mongo.Contexts;
+using Infrastructure.Data.Repositories;
 using TomadaStore.ProductApi.Repositories;
 using TomadaStore.ProductApi.Repositories.Interfaces;
 using TomadaStore.ProductApi.Services;
@@ -13,14 +13,11 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.Configure<MongoDbSettings>(
-    builder.Configuration.GetSection("MongoDB")
-    );
-
-builder.Services.AddSingleton<ConnectionDb>();
+builder.Services.AddSingleton<MongoDbContext>();
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<LogRepository>();
 
 var app = builder.Build();
 

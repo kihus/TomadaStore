@@ -2,53 +2,36 @@
 using TomadaStore.CustomerApi.Services.Interfaces;
 using TomadaStore.Models.DTOs.Customer;
 using TomadaStore.Models.DTOs.Page;
-using TomadaStore.Models.Entities;
+using TomadaStore.Models.DTOs.Result;
 using TomadaStore.Models.Extensions;
 
 namespace TomadaStore.CustomerApi.Services;
 
-public class CustomerService : ICustomerService
+public class CustomerService(
+    ILogger<CustomerService> logger, 
+    ICustomerRepository customerRepository
+    ) : ICustomerService
 {
-    private readonly ILogger<CustomerService> _logger;
-    private readonly ICustomerRepository _customerRespository;
+    private readonly ILogger<CustomerService> _logger = logger;
+    private readonly ICustomerRepository _customerRespository = customerRepository;
 
-    public CustomerService(ILogger<CustomerService> logger, ICustomerRepository customerRepository)
-    {
-        _logger = logger;
-        _customerRespository = customerRepository;
-    }
-
-    public async Task<CustomerDto> GetAllCustomerAsync(int page)
+    public async Task<Result<CustomerResponseDto>> GetAllCustomerAsync(PageDto page)
     {
         var currentPage = 1;
 
-        if (page > 1)
-            currentPage = page;
+        if (page.Page > 1)
+            currentPage = page.Page;
 
         try
         {
             var customers = await _customerRespository.GetAllCustomerAsync();
             var quantityCustomers = customers.Count;
 
-            var customersList = customers.Skip(currentPage > 1 ? 20 * (currentPage - 1) : 0).Take(20).ToList();
+            var list = customers.Skip(currentPage > 1 ? 20 * (currentPage - 1) : 0).ToList();
 
-            var info = new Info
-            {
-                CustomerQuantity = quantityCustomers,
-                Pages = (quantityCustomers <= 20
-                            ? 1
-                            : (quantityCustomers / 20) + 1),
-                Next = (customersList.Count >= 20 ? $"https://localhost:5001/api/v1/customer/?page={currentPage + 1}" : null),
-                Previous = (currentPage > 1 ? $"https://localhost:5001/api/v1/customer/?page={currentPage - 1}" : null)
-            };
+            string url = "https://localhost:9001/api/v1";
 
-            var customer = new CustomerDto
-            {
-                Info = info,
-                Result = customersList
-            };
-
-            return customer;
+            return list.ToResult(currentPage, quantityCustomers, list, url);
         }
         catch (Exception ex)
         {
@@ -94,7 +77,7 @@ public class CustomerService : ICustomerService
     {
         try
         {
-
+           await _customerRespository.UpdateStatusCustomerAsync(id);
         }
         catch (Exception ex)
         {

@@ -3,11 +3,13 @@ using TomadaStore.Models.DTOs.Product;
 using TomadaStore.Models.Extensions;
 using TomadaStore.ProductApi.Repositories.Interfaces;
 using TomadaStore.ProductApi.Services.Interfaces;
-using TomadaStore.SalesApi.DTOs.Sales;
 
 namespace TomadaStore.ProductApi.Services;
 
-public class ProductService(ILogger<ProductService> logger, IProductRepository repository) : IProductService
+public class ProductService(
+    ILogger<ProductService> logger,
+    IProductRepository repository
+    ) : IProductService
 {
     private readonly ILogger<ProductService> _logger = logger;
     private readonly IProductRepository _productRepository = repository;
@@ -29,9 +31,17 @@ public class ProductService(ILogger<ProductService> logger, IProductRepository r
         throw new NotImplementedException();
     }
 
-    public Task<List<ProductResponseDto>> GetAllProducts()
+    public async Task<List<ProductResponseDto>> GetAllProducts()
     {
-        throw new NotImplementedException();
+        try
+        {
+            var product = await _productRepository.GetAllProducts();
+            return [.. product.Select(p => p.ToProductResponseDto())]  ;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message, ex);
+        }
     }
 
     public async Task<ProductResponseDto> GetById(ObjectId id)

@@ -11,6 +11,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomadaStore.ProductApi", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomadaStore.SalesApi", "TomadaStore.SalesApi\TomadaStore.SalesApi.csproj", "{78BC6AE4-7B60-4DE4-CD3C-39019B152D31}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1- Presentation", "1- Presentation", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2- Domain", "2- Domain", "{1A4673CB-7CD4-4795-81E9-CBD1DAAD8922}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3- Infrastructure", "3- Infrastructure", "{A5B32283-E707-43BA-BBC1-931A873290A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Data", "Infrastructure.Data\Infrastructure.Data.csproj", "{5A1CBB1F-AB0F-4C05-8680-3A7FBC72CBFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomadaStore.CategoryApi", "TomadaStore.CategoryApi\TomadaStore.CategoryApi.csproj", "{05815EE2-CF54-42A2-ACFD-7BF2D4CC8637}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +43,25 @@ Global
 		{78BC6AE4-7B60-4DE4-CD3C-39019B152D31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78BC6AE4-7B60-4DE4-CD3C-39019B152D31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78BC6AE4-7B60-4DE4-CD3C-39019B152D31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A1CBB1F-AB0F-4C05-8680-3A7FBC72CBFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A1CBB1F-AB0F-4C05-8680-3A7FBC72CBFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A1CBB1F-AB0F-4C05-8680-3A7FBC72CBFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A1CBB1F-AB0F-4C05-8680-3A7FBC72CBFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05815EE2-CF54-42A2-ACFD-7BF2D4CC8637}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05815EE2-CF54-42A2-ACFD-7BF2D4CC8637}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05815EE2-CF54-42A2-ACFD-7BF2D4CC8637}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05815EE2-CF54-42A2-ACFD-7BF2D4CC8637}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{27048616-DF66-493E-999A-4A4714459102} = {1A4673CB-7CD4-4795-81E9-CBD1DAAD8922}
+		{51851ACB-FDE5-4AED-8076-72D28D178A5F} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{199D3BF7-5A33-4F72-A33D-996D9EFD6B8A} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{78BC6AE4-7B60-4DE4-CD3C-39019B152D31} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{5A1CBB1F-AB0F-4C05-8680-3A7FBC72CBFC} = {A5B32283-E707-43BA-BBC1-931A873290A4}
+		{05815EE2-CF54-42A2-ACFD-7BF2D4CC8637} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BECCA75C-DF0B-4FF1-AD58-04F86F473188}

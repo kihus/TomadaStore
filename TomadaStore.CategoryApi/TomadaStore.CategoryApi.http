@@ -1,0 +1,6 @@
+@TomadaStore.CategoryApi_HostAddress = http://localhost:5204
+
+GET {{TomadaStore.CategoryApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

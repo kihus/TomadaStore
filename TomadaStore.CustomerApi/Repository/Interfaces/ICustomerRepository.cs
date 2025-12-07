@@ -9,4 +9,5 @@ public interface ICustomerRepository
     Task InsertCustomerAsync(Customer customer);
     Task<List<CustomerResponseDto>> GetAllCustomerAsync();
     Task<CustomerResponseDto?> GetCustomerById(int id);
+    Task UpdateStatusCustomerAsync(int id);
 }

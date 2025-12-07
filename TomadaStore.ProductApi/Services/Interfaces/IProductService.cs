@@ -1,6 +1,5 @@
 ﻿using MongoDB.Bson;
 using TomadaStore.Models.DTOs.Product;
-using TomadaStore.SalesApi.DTOs.Sales;
 
 namespace TomadaStore.ProductApi.Services.Interfaces;
 
