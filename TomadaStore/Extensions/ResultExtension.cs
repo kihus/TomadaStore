@@ -14,8 +14,8 @@ public static class ResultExtension
             Pages = (quantity <= 20
                             ? 1
                             : (quantity / 20) + 1),
-            Next = (list.Count > 20 ? $"{url}{page + 1}" : null),
-            Previous = (page > 1 ? $"{url}{page - 1}" : null)
+            Next = (list.Count > 20 ? $"{url}/customer/?page={page + 1}" : null),
+            Previous = (page > 1 ? $"{url}/customer/?page={page - 1}" : null)
         };
         
         return new Result<CustomerResponseDto>(info, [.. list.Take(20)]);

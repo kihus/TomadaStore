@@ -1,5 +1,4 @@
-﻿using TomadaStore.Models.DTOs.Product;
-using TomadaStore.Models.DTOs.Sales;
+﻿using TomadaStore.Models.DTOs.Sales;
 using TomadaStore.Models.Entities;
 using TomadaStore.SalesApi.DTOs.Sales;
 
