@@ -1,28 +1,43 @@
 ﻿using Infrastructure.Data.Mongo.Contexts;
 using MongoDB.Driver;
+using RabbitMQ.Client;
+using System.Text;
+using System.Text.Json;
 using TomadaStore.Models.Entities;
 using TomadaStore.Models.Extensions;
 using TomadaStore.SalesApi.DTOs.Sales;
-using TomadaStore.SalesApi.Repositories.Interface;
+using TomadaStore.SalesApi.Repositories.v2.Interface;
 
-namespace TomadaStore.SalesApi.Repositories;
+namespace TomadaStore.SalesApi.Repositories.v2;
 
-public class SaleRepository : ISaleRepository
+public class SaleProducerRepository : ISaleProducerRepository
 {
     private readonly ILogger<Sale> _logger;
     private readonly IMongoCollection<Sale> _saleCollection;
+    private readonly IConnectionFactory _factory;
 
-    public SaleRepository(ILogger<Sale> logger, MongoDbContext connection)
+    public SaleProducerRepository(ILogger<Sale> logger, MongoDbContext connection, IConnectionFactory factory)
     {
         _logger = logger;
         _saleCollection = connection.Sales;
+        _factory = factory;
     }
 
     public async Task CreateSaleAsync(Sale sale)
     {
         try
         {
-            await _saleCollection.InsertOneAsync(sale);
+            using var connection = await _factory.CreateConnectionAsync();
+            using var channel = await connection.CreateChannelAsync();
+
+            await channel.QueueDeclareAsync(queue: "sales_queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+
+            var saleSerialize = JsonSerializer.Serialize(sale);
+
+            var saleMessage = Encoding.UTF8.GetBytes(saleSerialize);
+
+            await channel.BasicPublishAsync(exchange: string.Empty, routingKey: "sales_queue", body: saleMessage);
+            //await _saleCollection.InsertOneAsync(sale);
         }
         catch (MongoException mongoEx)
         {

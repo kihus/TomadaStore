@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Data", "Infr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomadaStore.CategoryApi", "TomadaStore.CategoryApi\TomadaStore.CategoryApi.csproj", "{05815EE2-CF54-42A2-ACFD-7BF2D4CC8637}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomadaStore.ProductConsumerApi", "TomadaStore.ProductConsumerApi\TomadaStore.ProductConsumerApi.csproj", "{A5A3A488-4470-4723-B280-091A43A14CFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{05815EE2-CF54-42A2-ACFD-7BF2D4CC8637}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05815EE2-CF54-42A2-ACFD-7BF2D4CC8637}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05815EE2-CF54-42A2-ACFD-7BF2D4CC8637}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5A3A488-4470-4723-B280-091A43A14CFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5A3A488-4470-4723-B280-091A43A14CFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5A3A488-4470-4723-B280-091A43A14CFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5A3A488-4470-4723-B280-091A43A14CFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{78BC6AE4-7B60-4DE4-CD3C-39019B152D31} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{5A1CBB1F-AB0F-4C05-8680-3A7FBC72CBFC} = {A5B32283-E707-43BA-BBC1-931A873290A4}
 		{05815EE2-CF54-42A2-ACFD-7BF2D4CC8637} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{A5A3A488-4470-4723-B280-091A43A14CFE} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BECCA75C-DF0B-4FF1-AD58-04F86F473188}

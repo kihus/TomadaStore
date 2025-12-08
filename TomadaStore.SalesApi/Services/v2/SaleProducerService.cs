@@ -1,27 +1,30 @@
 ﻿using MongoDB.Bson;
-using TomadaStore.Models.DTOs.Customer;
 using TomadaStore.Models.DTOs.Product;
-using TomadaStore.SalesApi.DTOs.Sales;
+using TomadaStore.Models.DTOs.Sales;
 using TomadaStore.Models.Entities;
 using TomadaStore.Models.Extensions;
-using TomadaStore.SalesApi.Repositories.Interface;
-using TomadaStore.SalesApi.Services.Interfaces;
-using TomadaStore.Models.DTOs.Sales;
+using TomadaStore.SalesApi.DTOs.Sales;
+using TomadaStore.SalesApi.Repositories.v2.Interface;
+using TomadaStore.SalesApi.Services.v2.Interfaces;
 
-namespace TomadaStore.SalesApi.Services;
+namespace TomadaStore.SalesApi.Services.v2;
 
-public class SaleService(ILogger<SaleService> logger, IHttpClientFactory httpClientFactory, ISaleRepository saleRepository) : ISaleService
+public class SaleProducerService(
+    ILogger<SaleProducerService> logger, 
+    IHttpClientFactory httpClientFactory, 
+    ISaleProducerRepository saleRepository
+    ) : ISaleProducerService
 {
-    private readonly ILogger<SaleService> _logger = logger;
+    private readonly ILogger<SaleProducerService> _logger = logger;
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
-    private readonly ISaleRepository _saleRepository = saleRepository;
+    private readonly ISaleProducerRepository _saleRepository = saleRepository;
 
-    public async Task CreateSales(SaleRequestDto saleDto)
+    public async Task CreateSalesAsync(SaleRequestDto saleDto)
     {
         try
         {
             var customerClient = _httpClientFactory.CreateClient("CustomersApi");
-            var customer = await customerClient.GetFromJsonAsync<SaleCustomerResponseDto>(saleDto.CustomerId.ToString())
+            var customer = await customerClient.GetFromJsonAsync<SaleCustomerResponseDto>($"/api/v1/customer/id/{saleDto.CustomerId.ToString()}")
                 ?? throw new Exception("Customer not found!");
 
             var productsIds = new ProductIdDto
@@ -30,7 +33,7 @@ public class SaleService(ILogger<SaleService> logger, IHttpClientFactory httpCli
             };
             
             var productClient = _httpClientFactory.CreateClient("ProductsApi");
-            var productResponse = await productClient.PostAsJsonAsync("products/", productsIds);
+            var productResponse = await productClient.PostAsJsonAsync($"/api/v1/product/products/", productsIds);
 
             if (productResponse.StatusCode == System.Net.HttpStatusCode.NoContent)
                 throw new HttpRequestException("Request error");

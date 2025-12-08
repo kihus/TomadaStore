@@ -1,8 +1,13 @@
 using Infrastructure.Data.Mongo.Contexts;
-using TomadaStore.SalesApi.Repositories;
-using TomadaStore.SalesApi.Repositories.Interface;
-using TomadaStore.SalesApi.Services;
-using TomadaStore.SalesApi.Services.Interfaces;
+using RabbitMQ.Client;
+using TomadaStore.SalesApi.Repositories.v1.Interface;
+using TomadaStore.SalesApi.Repositories.v1;
+using TomadaStore.SalesApi.Repositories.v2.Interface;
+using TomadaStore.SalesApi.Services.v1;
+using TomadaStore.SalesApi.Services.v1.Interfaces;
+using TomadaStore.SalesApi.Repositories.v2;
+using TomadaStore.SalesApi.Services.v2.Interfaces;
+using TomadaStore.SalesApi.Services.v2;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,15 +21,29 @@ builder.Services.AddSingleton<MongoDbContext>();
 
 builder.Services.AddScoped<ISaleRepository, SaleRepository>();
 builder.Services.AddScoped<ISaleService, SaleService>();
+builder.Services.AddScoped<ISaleProducerRepository, SaleProducerRepository>();
+builder.Services.AddScoped<ISaleProducerService, SaleProducerService>();
+
+builder.Services.AddSingleton<IConnectionFactory>(con =>
+{
+    var factory = new ConnectionFactory
+    {
+        HostName = "localhost",
+        UserName = "guest",
+        Password = "guest"
+    };
+
+    return factory;
+});
 
 builder.Services.AddHttpClient("CustomersApi", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:5001/api/v1/customer/");
+    client.BaseAddress = new Uri("https://localhost:9001");
 });
 
 builder.Services.AddHttpClient("ProductsApi", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:6001/api/v1/product/");
+    client.BaseAddress = new Uri("https://localhost:3001");
 });
 
 var app = builder.Build();

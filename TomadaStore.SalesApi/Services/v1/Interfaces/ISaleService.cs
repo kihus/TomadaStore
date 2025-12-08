@@ -1,8 +1,7 @@
 ﻿using MongoDB.Bson;
 using TomadaStore.SalesApi.DTOs.Sales;
-using TomadaStore.Models.Entities;
 
-namespace TomadaStore.SalesApi.Services.Interfaces;
+namespace TomadaStore.SalesApi.Services.v1.Interfaces;
 
 public interface ISaleService
 {
