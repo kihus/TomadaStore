@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Data", "Infr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomadaStore.CategoryApi", "TomadaStore.CategoryApi\TomadaStore.CategoryApi.csproj", "{05815EE2-CF54-42A2-ACFD-7BF2D4CC8637}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomadaStore.ProductConsumerApi", "TomadaStore.ProductConsumerApi\TomadaStore.ProductConsumerApi.csproj", "{A5A3A488-4470-4723-B280-091A43A14CFE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TomadaStore.SalesConsumerApi", "TomadaStore.ProductConsumerApi\TomadaStore.SalesConsumerApi.csproj", "{A5A3A488-4470-4723-B280-091A43A14CFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
