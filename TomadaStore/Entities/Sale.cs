@@ -1,12 +1,13 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using TomadaStore.Models.DTOs.Sales;
+using TomadaStore.Models.Entities.Enum;
 
 namespace TomadaStore.Models.Entities;
 
 public class Sale(
     CustomerSale customer, 
-    List<ProductSale> products
+    List<ProductSale> products,
+    string status
     )
 {
     [BsonRepresentation(BsonType.ObjectId)]
@@ -17,6 +18,9 @@ public class Sale(
 
     [BsonElement("products")]
     public List<ProductSale> Products { get; private set; } = products;
+
+    [BsonElement("status")]
+    public string Status { get; private set; } = status.ToString();
 
     [BsonElement("sale_date")]
     public DateTime SaleDate { get; private set; } = DateTime.Now;

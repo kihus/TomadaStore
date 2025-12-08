@@ -7,16 +7,13 @@ using TomadaStore.SalesApi.Repositories.v1.Interface;
 
 namespace TomadaStore.SalesApi.Repositories.v1;
 
-public class SaleRepository : ISaleRepository
+public class SaleRepository(
+    ILogger<Sale> logger, 
+    MongoDbContext connection
+    ) : ISaleRepository
 {
-    private readonly ILogger<Sale> _logger;
-    private readonly IMongoCollection<Sale> _saleCollection;
-
-    public SaleRepository(ILogger<Sale> logger, MongoDbContext connection)
-    {
-        _logger = logger;
-        _saleCollection = connection.Sales;
-    }
+    private readonly ILogger<Sale> _logger = logger;
+    private readonly IMongoCollection<Sale> _saleCollection = connection.Sales;
 
     public async Task CreateSaleAsync(Sale sale)
     {

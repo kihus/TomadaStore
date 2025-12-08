@@ -46,6 +46,11 @@ builder.Services.AddHttpClient("ProductsApi", client =>
     client.BaseAddress = new Uri("https://localhost:3001");
 });
 
+builder.Services.AddHttpClient("PaymentApi", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7036");
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

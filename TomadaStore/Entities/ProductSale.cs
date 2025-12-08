@@ -5,7 +5,7 @@ using System.Xml.Linq;
 namespace TomadaStore.Models.Entities;
 
 public class ProductSale(
-    ObjectId id,
+    string id,
     string name,
     decimal price,
     int quantity,
@@ -13,7 +13,7 @@ public class ProductSale(
     )
 {
     [BsonElement("id")]
-    public ObjectId Id { get; private set; } = id;
+    public string Id { get; private set; } = id;
 
     [BsonElement("name")]
     public string Name { get; private set; } = name;

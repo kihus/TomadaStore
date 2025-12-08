@@ -3,6 +3,8 @@ using RabbitMQ.Client.Events;
 using System.Text;
 using System.Text.Json;
 using TomadaStore.Models.Entities;
+using TomadaStore.Models.Entities.Enum;
+using TomadaStore.SalesApi.DTOs.Sales;
 using TomadaStore.SalesConsumerApi.Repositories.Interfaces;
 using TomadaStore.SalesConsumerApi.Services.Interfaces;
 
@@ -22,25 +24,23 @@ public class SaleConsumerService(
     {
         try
         {
-            List<Sale> sales = null;
             using var connection = await _factory.CreateConnectionAsync();
             using var channel = await connection.CreateChannelAsync();
             
-            await channel.QueueDeclareAsync(queue: "sales_queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
-            _logger.LogInformation("Receiving sales...");
+            await channel.QueueDeclareAsync(queue: "payment_queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
             var consumer = new AsyncEventingBasicConsumer(channel);
-            consumer.ReceivedAsync += (model, ea) =>
+            consumer.ReceivedAsync += async (model, ea) =>
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
                 var sale = JsonSerializer.Deserialize<Sale>(message);
-                _logger.LogInformation(sale.ToString());
-
-                return Task.CompletedTask;
+                await _repository.GetSalesFromRabbit(sale);
+                return;
             };
-            await channel.BasicConsumeAsync("sales_queue", autoAck: true, consumer: consumer);
-            await _repository.GetSalesFromRabbit(sales);
+
+            await channel.BasicConsumeAsync("payment_queue", autoAck: true, consumer: consumer);
+           
         }
         catch (Exception ex)
         {

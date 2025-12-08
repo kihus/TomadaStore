@@ -2,6 +2,7 @@
 using TomadaStore.Models.DTOs.Product;
 using TomadaStore.Models.DTOs.Sales;
 using TomadaStore.Models.Entities;
+using TomadaStore.Models.Entities.Enum;
 using TomadaStore.Models.Extensions;
 using TomadaStore.SalesApi.DTOs.Sales;
 using TomadaStore.SalesApi.Repositories.v2.Interface;
@@ -50,13 +51,16 @@ public class SaleProducerService(
             foreach(var item in products)
             {
                 var productQuantity = saleDto.Products.Find(x => x.ProductId.ToString() == item.Id);
-                var productSale = new ProductSale(ObjectId.Parse(item.Id), item.Name, item.Price, productQuantity.Quantity, item.Category);
+                var productSale = new ProductSale(item.Id, item.Name, item.Price, productQuantity.Quantity, item.Category);
                 productsSales.Add(productSale);
             }
 
-            var sale = new Sale(customer.ToCustomerSale(), productsSales);
+            var sale = new Sale(customer.ToCustomerSale(), productsSales, EStatus.Pending.ToString());
 
             await _saleRepository.CreateSaleAsync(sale);
+
+            var client = _httpClientFactory.CreateClient("PaymentApi");
+            await client.PostAsync("/api/v1/payment", null);
         }
         catch (Exception ex)
         {

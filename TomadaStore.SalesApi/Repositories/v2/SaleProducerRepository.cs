@@ -10,23 +10,21 @@ using TomadaStore.SalesApi.Repositories.v2.Interface;
 
 namespace TomadaStore.SalesApi.Repositories.v2;
 
-public class SaleProducerRepository : ISaleProducerRepository
+public class SaleProducerRepository(
+    ILogger<Sale> logger, 
+    MongoDbContext connection, 
+    IConnectionFactory factory
+    ) : ISaleProducerRepository
 {
-    private readonly ILogger<Sale> _logger;
-    private readonly IMongoCollection<Sale> _saleCollection;
-    private readonly IConnectionFactory _factory;
-
-    public SaleProducerRepository(ILogger<Sale> logger, MongoDbContext connection, IConnectionFactory factory)
-    {
-        _logger = logger;
-        _saleCollection = connection.Sales;
-        _factory = factory;
-    }
+    private readonly ILogger<Sale> _logger = logger;
+    private readonly IMongoCollection<Sale> _saleCollection = connection.Sales;
+    private readonly IConnectionFactory _factory = factory;
 
     public async Task CreateSaleAsync(Sale sale)
     {
         try
         {
+
             using var connection = await _factory.CreateConnectionAsync();
             using var channel = await connection.CreateChannelAsync();
 
@@ -37,7 +35,6 @@ public class SaleProducerRepository : ISaleProducerRepository
             var saleMessage = Encoding.UTF8.GetBytes(saleSerialize);
 
             await channel.BasicPublishAsync(exchange: string.Empty, routingKey: "sales_queue", body: saleMessage);
-            //await _saleCollection.InsertOneAsync(sale);
         }
         catch (MongoException mongoEx)
         {
