@@ -11,8 +11,8 @@ using TomadaStore.SalesApi.Services.v2.Interfaces;
 namespace TomadaStore.SalesApi.Services.v2;
 
 public class SaleProducerService(
-    ILogger<SaleProducerService> logger, 
-    IHttpClientFactory httpClientFactory, 
+    ILogger<SaleProducerService> logger,
+    IHttpClientFactory httpClientFactory,
     ISaleProducerRepository saleRepository
     ) : ISaleProducerService
 {
@@ -32,7 +32,7 @@ public class SaleProducerService(
             {
                 ProductsIds = [.. saleDto.Products.Select(x => x.ProductId)]
             };
-            
+
             var productClient = _httpClientFactory.CreateClient("ProductsApi");
             var productResponse = await productClient.PostAsJsonAsync($"/api/v1/product/products/", productsIds);
 
@@ -43,12 +43,12 @@ public class SaleProducerService(
             if (string.IsNullOrWhiteSpace(productResponseText))
                 throw new Exception("Response is null");
 
-            var products = await productResponse.Content.ReadFromJsonAsync<List<ProductResponseDto>>() 
+            var products = await productResponse.Content.ReadFromJsonAsync<List<ProductResponseDto>>()
                 ?? throw new Exception("Product not found!");
 
             var productsSales = new List<ProductSale>();
 
-            foreach(var item in products)
+            foreach (var item in products)
             {
                 var productQuantity = saleDto.Products.Find(x => x.ProductId.ToString() == item.Id);
                 var productSale = new ProductSale(item.Id, item.Name, item.Price, productQuantity.Quantity, item.Category);
@@ -59,8 +59,11 @@ public class SaleProducerService(
 
             await _saleRepository.CreateSaleAsync(sale);
 
-            var client = _httpClientFactory.CreateClient("PaymentApi");
-            await client.PostAsync("/api/v1/payment", null);
+            var clientPayment = _httpClientFactory.CreateClient("PaymentApi");
+            await clientPayment.PostAsync("/api/v1/payment", null);
+
+            var clientConsumer = _httpClientFactory.CreateClient("SaleConsumerApi");
+            await clientConsumer.PostAsync("/api/v1/SaleConsumer", null);
         }
         catch (Exception ex)
         {
